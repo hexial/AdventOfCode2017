@@ -1,6 +1,7 @@
 package first
 
 import (
+	"AdventOfCode2017/util"
 	"testing"
 
 	log "github.com/sirupsen/logrus"
@@ -9,11 +10,8 @@ import (
 
 func calcPartOne(in string) int {
 	//log.Infof("*****************")
-	numbers := make([]int, len(in))
-	for i, r := range in {
-		numbers[i] = int(r - 48)
-	}
 	//log.Infof("%+v", numbers)
+	numbers := util.Numbers(in)
 	sum := 0
 	for i := range numbers {
 		j := i + 1
@@ -40,11 +38,7 @@ func TestPartOne(t *testing.T) {
 
 func calcPartTwo(in string) int {
 	//log.Infof("*****************")
-	numbers := make([]int, len(in))
-	for i, r := range in {
-		numbers[i] = int(r - 48)
-	}
-	//log.Infof("%+v", numbers)
+	numbers := util.Numbers(in)
 	sum := 0
 	for i := range numbers {
 		j := i + len(numbers)/2
