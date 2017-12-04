@@ -10,14 +10,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func Numbers(in string) []int {
-	numbers := make([]int, len(in))
-	for i, r := range in {
-		numbers[i] = int(r - 48)
-	}
-	return numbers
-}
-
 type MyCSVFilterReader struct {
 	reader io.Reader
 }

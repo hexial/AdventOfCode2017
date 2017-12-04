@@ -1,17 +1,24 @@
 package first
 
 import (
-	"AdventOfCode2017/util"
 	"testing"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
+func Numbers(in string) []int {
+	numbers := make([]int, len(in))
+	for i, r := range in {
+		numbers[i] = int(r - 48)
+	}
+	return numbers
+}
+
 func calcPartOne(in string) int {
 	//log.Infof("*****************")
 	//log.Infof("%+v", numbers)
-	numbers := util.Numbers(in)
+	numbers := Numbers(in)
 	sum := 0
 	for i := range numbers {
 		j := i + 1
@@ -38,7 +45,7 @@ func TestPartOne(t *testing.T) {
 
 func calcPartTwo(in string) int {
 	//log.Infof("*****************")
-	numbers := util.Numbers(in)
+	numbers := Numbers(in)
 	sum := 0
 	for i := range numbers {
 		j := i + len(numbers)/2

@@ -1,8 +1,7 @@
 package fourth
 
 import (
-	"bufio"
-	"os"
+	"AdventOfCode2017/util"
 	"sort"
 	"strings"
 	"testing"
@@ -12,25 +11,20 @@ import (
 )
 
 func DoPartOne(filename string, anagram bool) int {
-	f, _ := os.Open(filename)
-	r := bufio.NewReader(f)
+	lines := util.FileAsWordArray(filename)
 	var count int
-	for {
-		if s, err := r.ReadString('\n'); err == nil {
-			if CheckPartOne(strings.Split(s, "\n")[0], anagram) {
-				count++
-			}
-		} else {
-			return count
+	for _, line := range lines {
+		if CheckPartOne(line, anagram) {
+			count++
 		}
 	}
+	return count
 }
 
-func CheckPartOne(in string, anagram bool) bool {
+func CheckPartOne(in []string, anagram bool) bool {
 	m := make(map[string]bool)
-	l := strings.Split(in, " ")
 	log.Infof("*****************")
-	for _, s := range l {
+	for _, s := range in {
 		if anagram {
 			r := strings.NewReader(s)
 			sl := make([]string, len(s))
