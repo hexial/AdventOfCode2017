@@ -25,6 +25,32 @@ func FileAsLineArray(filename string) []string {
 	}
 }
 
+func FileAsTabbedSingleLineNumbers(filename string) []int {
+	l := FileAsLineArray(filename)[0]
+	s := strings.Split(l, "\t")
+	result := make([]int, len(s))
+	for i := range s {
+		var err error
+		result[i], err = strconv.Atoi(s[i])
+		if err != nil {
+			log.Panic(err)
+		}
+	}
+	return result
+}
+
+func FileAsNumberArray(filename string) []int {
+	l := make([]int, 0)
+	for _, s := range FileAsLineArray(filename) {
+		n, err := strconv.Atoi(s)
+		if err != nil {
+			log.Panic(err)
+		}
+		l = append(l, n)
+	}
+	return l
+}
+
 func FileAsWordArray(filename string) [][]string {
 	l := make([][]string, 0)
 	for _, s := range FileAsLineArray(filename) {

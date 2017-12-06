@@ -1,4 +1,4 @@
-package fourth
+package day04
 
 import (
 	"AdventOfCode2017/util"
