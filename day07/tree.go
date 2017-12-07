@@ -30,25 +30,18 @@ func (this Tree) FindBase() *TreeNode {
 	return nil
 }
 
-func (this Tree) Balance() int {
-	return this.FindBase().Balance()
-}
-
-func (this Tree) BalanceNew() int {
-	base := this.FindBase()
-	log.Infof("base=%s", base.Name)
-	for _, child := range base.Children {
-		log.Infof("child=%s (%d) : %d", child.Name, child.Weight, child.WeightWithChildren())
-	}
-	return 0
-}
-
 func (this *TreeNode) DebugInfo() string {
-	return fmt.Sprintf("%s (%d) (%d)", this.Name, this.Weight, this.WeightSum())
+	return fmt.Sprintf("%s (%d) (%d)", this.Name, this.Weight, this.WeightWithChildren())
 }
 
 func (this *TreeNode) Balance() int {
 	//log.Infof("Balance : %s", this.Name)
+	for _, child := range this.Children {
+		n := child.Balance()
+		if n > 0 {
+			return n
+		}
+	}
 	var incorrect *TreeNode
 	var prev *TreeNode
 	var wanted int
@@ -56,23 +49,26 @@ func (this *TreeNode) Balance() int {
 		prev = this.Children[0]
 		for i := 1; i < len(this.Children); i++ {
 			curr := this.Children[i]
-			if incorrect == nil && prev.WeightSum() != curr.WeightSum() {
+			if incorrect == nil && prev.WeightWithChildren() != curr.WeightWithChildren() && i == len(this.Children)-1 {
+				incorrect = curr
+				wanted = prev.WeightWithChildren()
+			} else if incorrect == nil && prev.WeightWithChildren() != curr.WeightWithChildren() {
 				incorrect = prev
-				wanted = curr.WeightSum()
+				wanted = curr.WeightWithChildren()
 			} else if incorrect != nil {
-				if curr.WeightSum() != prev.WeightSum() {
-					if curr.WeightSum() != incorrect.WeightSum() {
+				if curr.WeightWithChildren() != prev.WeightWithChildren() {
+					if curr.WeightWithChildren() != incorrect.WeightWithChildren() {
 						incorrect = curr
-						wanted = prev.WeightSum()
+						wanted = prev.WeightWithChildren()
 					} else {
 						incorrect = prev
-						wanted = curr.WeightSum()
+						wanted = curr.WeightWithChildren()
 					}
 				}
 			}
 			prev = curr
 			if incorrect != nil {
-				//log.Infof("Balance : %d : prev=%s : curr=%s : incorrect=%s", i, prev.DebugInfo(), curr.DebugInfo(), incorrect.DebugInfo())
+				log.Infof("Balance : %d : prev=%s : curr=%s : incorrect=%s", i, prev.DebugInfo(), curr.DebugInfo(), incorrect.DebugInfo())
 			} else {
 				//log.Infof("Balance : %d : prev=%s : curr=%s", i, prev.DebugInfo(), curr.DebugInfo())
 			}
@@ -81,19 +77,12 @@ func (this *TreeNode) Balance() int {
 	if incorrect != nil {
 		log.Infof("************************")
 		for _, child := range this.Children {
-			log.Infof("%s : %d", child.Name, child.WeightSum())
+			log.Infof("%s", child.DebugInfo())
 		}
-		newWeight := wanted - incorrect.WeightOfChildren()
-		log.Infof("%s : wanted=%d : new=%d", incorrect.Name, wanted, newWeight)
-		return newWeight
-	}
-	//
-	// Balance children
-	for _, child := range this.Children {
-		n := child.Balance()
-		if n > 0 {
-			return n
-		}
+		log.Infof("------------------------")
+		incorrect.Weight -= (incorrect.WeightWithChildren() - wanted)
+		log.Infof("%s", incorrect.DebugInfo())
+		return incorrect.Weight
 	}
 	return 0
 }
@@ -112,10 +101,6 @@ func (this *TreeNode) WeightOfChildren() int {
 		sum += child.Weight
 	}
 	return sum
-}
-
-func (this *TreeNode) WeightSum() int {
-	return this.Weight + this.WeightOfChildren()
 }
 
 func Load(filename string) Tree {

@@ -13,7 +13,6 @@ func TestPartOne(t *testing.T) {
 }
 
 func TestPartTwo(t *testing.T) {
-	//assert.Equal(t, 60, Load("input.1.sample.txt").BalanceNew(), "oops")
-	Load("input.1.sample.txt").BalanceNew()
-	Load("input.1.txt").BalanceNew()
+	assert.Equal(t, 60, Load("input.1.sample.txt").FindBase().Balance(), "oops")
+	Load("input.1.txt").FindBase().Balance()
 }
