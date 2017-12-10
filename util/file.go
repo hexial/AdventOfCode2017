@@ -26,8 +26,12 @@ func FileAsLineArray(filename string) []string {
 }
 
 func FileAsTabbedSingleLineNumbers(filename string) []int {
+	return FileAsSeparatedSingleLineNumbers(filename, "\t")
+}
+
+func FileAsSeparatedSingleLineNumbers(filename string, sep string) []int {
 	l := FileAsLineArray(filename)[0]
-	s := strings.Split(l, "\t")
+	s := strings.Split(l, sep)
 	result := make([]int, len(s))
 	for i := range s {
 		var err error
