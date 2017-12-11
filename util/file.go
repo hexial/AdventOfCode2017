@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
@@ -23,6 +24,18 @@ func FileAsLineArray(filename string) []string {
 			return l
 		}
 	}
+}
+
+func FileAsString(filename string) string {
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Panic(err)
+	}
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		log.Panic(err)
+	}
+	return string(b)
 }
 
 func FileAsTabbedSingleLineNumbers(filename string) []int {
