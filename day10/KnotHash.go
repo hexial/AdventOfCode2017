@@ -9,7 +9,7 @@ type KnotHash struct {
 	circularList         []byte
 	circularListPos      int
 	circularListSkipSize int
-	denseHash            string
+	DenseHash            string
 }
 
 func (kh *KnotHash) reverse(l byte) {
@@ -50,7 +50,7 @@ func (kh *KnotHash) result1() int {
 	return int(kh.circularList[0]) * int(kh.circularList[1])
 }
 
-func (kh *KnotHash) calcDenseHash() {
+func (kh *KnotHash) CalcDenseHash() {
 	denseHash := make([]byte, 16)
 	for x := 0; x < 16; x++ {
 		for y := 0; y < 16; y++ {
@@ -58,7 +58,7 @@ func (kh *KnotHash) calcDenseHash() {
 		}
 	}
 	for x := 0; x < 16; x++ {
-		kh.denseHash += fmt.Sprintf("%02x", denseHash[x])
+		kh.DenseHash += fmt.Sprintf("%02x", denseHash[x])
 	}
 }
 
@@ -99,6 +99,23 @@ func NewKnotHashPartTwo(input string, circularListLen int) *KnotHash {
 			kh.reverse(b)
 		}
 	}
-	kh.calcDenseHash()
+	kh.CalcDenseHash()
 	return kh
+}
+
+func NewKnotHashDay14(input string) string {
+	kh := new(KnotHash)
+	kh.circularList = make([]byte, 256)
+	//
+	// CircularList
+	for i := 0; i < len(kh.circularList); i++ {
+		kh.circularList[i] = byte(i)
+	}
+	//
+	//
+	for _, i := range []byte(input) {
+		kh.reverse(i)
+	}
+	kh.CalcDenseHash()
+	return kh.DenseHash
 }

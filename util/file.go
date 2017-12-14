@@ -68,20 +68,28 @@ func FileAsNumberArray(filename string) []int {
 	return l
 }
 
-func FileAsWordArray(filename string) [][]string {
+func FileAsWordArraySep(filename string, sep string) [][]string {
 	l := make([][]string, 0)
 	for _, s := range FileAsLineArray(filename) {
-		l = append(l, strings.Split(s, " "))
+		l = append(l, strings.Split(s, sep))
 	}
 	return l
 }
 
+func FileAsWordArray(filename string) [][]string {
+	return FileAsWordArraySep(filename, " ")
+}
+
 func FileAsWordNumberArray(filename string) [][]int {
+	return FileAsWordNumberArraySep(filename, " ")
+}
+
+func FileAsWordNumberArraySep(filename string, sep string) [][]int {
 	l1 := make([][]int, 0)
-	for _, s1 := range FileAsWordArray(filename) {
+	for _, s1 := range FileAsWordArraySep(filename, sep) {
 		l2 := make([]int, 0)
 		for _, s2 := range s1 {
-			n, err := strconv.Atoi(s2)
+			n, err := strconv.Atoi(strings.TrimSpace(s2))
 			if err != nil {
 				log.Panic(err)
 			}
