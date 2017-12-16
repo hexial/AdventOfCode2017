@@ -113,8 +113,12 @@ func NewKnotHashDay14(input string) string {
 	}
 	//
 	//
-	for _, i := range []byte(input) {
-		kh.reverse(i)
+	//
+	//
+	for x := 0; x < 64; x++ {
+		for _, i := range []byte(input) {
+			kh.reverse(i)
+		}
 	}
 	kh.CalcDenseHash()
 	return kh.DenseHash
