@@ -2,7 +2,6 @@ package day08
 
 import (
 	"AdventOfCode2017/util"
-	"log"
 	"strconv"
 )
 
@@ -17,22 +16,22 @@ func (cpu *CPU) execute() {
 		//
 		// Check
 		if len(l) != 7 {
-			log.Panicf("Expected len 7. %s", l)
+			util.LogPanicf("Expected len 7. %s", l)
 		}
 		if l[3] != "if" {
-			log.Panicf("%s is not if", l[3])
+			util.LogPanicf("%s is not if", l[3])
 		}
 		if_reg := l[4]
 		if_cond := l[5]
 		if_val, err := strconv.Atoi(l[6])
 		if err != nil {
-			log.Panicf("Unable to atoi %s", l[6])
+			util.LogPanicf("Unable to atoi %s", l[6])
 		}
 		dst_reg := l[0]
 		dst_op := l[1]
 		dst_val, err := strconv.Atoi(l[2])
 		if err != nil {
-			log.Panicf("Unable to atoi %s", l[2])
+			util.LogPanicf("Unable to atoi %s", l[2])
 		}
 		//
 		// IF
@@ -51,7 +50,7 @@ func (cpu *CPU) execute() {
 		case "!=":
 			cond = cpu.LoadReg(if_reg) != if_val
 		default:
-			log.Panicf("Unhandled %s", if_cond)
+			util.LogPanicf("Unhandled %s", if_cond)
 		}
 		if cond {
 			switch dst_op {
@@ -60,7 +59,7 @@ func (cpu *CPU) execute() {
 			case "dec":
 				cpu.StoreReg(dst_reg, cpu.LoadReg(dst_reg)-dst_val)
 			default:
-				log.Panicf("Unhandled %s", dst_op)
+				util.LogPanicf("Unhandled %s", dst_op)
 			}
 		}
 	}

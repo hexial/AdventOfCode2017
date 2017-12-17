@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	
 )
 
 func Fix(loops int, repeat int) int {
@@ -59,7 +59,7 @@ func (d *Dance) Compile(filename string) {
 			move.T = S
 			move.S_SIZE, err = strconv.Atoi(m[1:])
 			if err != nil {
-				log.Panicf("%s - %v", m, err)
+				util.LogPanicf("%s - %v", m, err)
 			}
 		} else if strings.HasPrefix(m, "x") {
 			move.T = X
@@ -84,7 +84,7 @@ func (d *Dance) Compile(filename string) {
 }
 
 func (d *Dance) State() {
-	log.Infof("%s", d.AsString())
+	util.LogInfof("%s", d.AsString())
 }
 
 func (d *Dance) AsString() string {
@@ -116,8 +116,8 @@ func (d *Dance) ExecutePartTwo() string {
 			repeat = i
 		}
 	}
-	log.Infof("Matches: %d", repeat)
-	log.Infof("Should run: %d", Fix(loops, repeat))
+	util.LogInfof("Matches: %d", repeat)
+	util.LogInfof("Should run: %d", Fix(loops, repeat))
 	d.Setup()
 	for i := 0; i < Fix(loops, repeat); i++ {
 		for j := range d.moves {

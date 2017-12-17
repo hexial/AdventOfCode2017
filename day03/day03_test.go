@@ -1,11 +1,9 @@
 package day03
 
 import (
+	"AdventOfCode2017/util"
 	"math"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -22,7 +20,7 @@ func Manhattan(max float64, j float64) int {
 	if l%2 == 0 {
 		l++
 	}
-	log.Infof("l=%d", l)
+	util.LogInfof("l=%d", l)
 	v := make([][]float64, l)
 	for i := 0; i < len(v); i++ {
 		v[i] = make([]float64, l)
@@ -69,7 +67,7 @@ func Manhattan(max float64, j float64) int {
 	//
 	// Debug
 	//for i := 0; i < len(v); i++ {
-	//	log.Infof("%v", v[i])
+	//	util.LogInfof("%v", v[i])
 	//}
 	//
 	// Calculate distance
@@ -102,8 +100,8 @@ func Manhattan(max float64, j float64) int {
 		q1 = y2
 		q2 = y1
 	}
-	log.Infof("p1=%d q1=%d", p1, q1)
-	log.Infof("p2=%d q2=%d", q1, q2)
+	util.LogInfof("p1=%d q1=%d", p1, q1)
+	util.LogInfof("p2=%d q2=%d", q1, q2)
 	distance := (p1 - p2) + (q1 - q2)
 
 	//for i, val1 := range vector1 {
@@ -120,7 +118,7 @@ func Manhattan2(max float64) float64 {
 	if l%2 == 0 {
 		l++
 	}
-	log.Infof("l=%d", l)
+	util.LogInfof("l=%d", l)
 	v := make([][]float64, l)
 	for i := 0; i < len(v); i++ {
 		v[i] = make([]float64, l)
@@ -133,9 +131,9 @@ func Manhattan2(max float64) float64 {
 	v[y][x] = float64(1)
 	x++
 	for i := 2; i <= int(l*l); i++ {
-		log.Infof("*************************")
+		util.LogInfof("*************************")
 		for i := 0; i < len(v); i++ {
-			log.Infof("%v", v[i])
+			util.LogInfof("%v", v[i])
 		}
 
 		//
@@ -195,11 +193,11 @@ func TestPartOne(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 0, Manhattan(23, 1), "oops")
-	assert.Equal(t, 3, Manhattan(23, 12), "oops")
-	assert.Equal(t, 2, Manhattan(23, 23), "oops")
-	assert.Equal(t, 31, Manhattan(1024, 1024), "oops")
-	log.Infof("Answer: %d", Manhattan(312051, 312051))
+	util.AssertEqual(t, 0, Manhattan(23, 1))
+	util.AssertEqual(t, 3, Manhattan(23, 12))
+	util.AssertEqual(t, 2, Manhattan(23, 23))
+	util.AssertEqual(t, 31, Manhattan(1024, 1024))
+	util.LogInfof("Answer: %d", Manhattan(312051, 312051))
 }
 
 func TestPartTwo(t *testing.T) {
@@ -207,5 +205,5 @@ func TestPartTwo(t *testing.T) {
 	//
 	//
 
-	log.Infof("Answer: %f", Manhattan2(312051))
+	util.LogInfof("Answer: %f", Manhattan2(312051))
 }

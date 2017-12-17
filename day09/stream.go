@@ -1,8 +1,6 @@
 package day09
 
-import (
-	log "github.com/sirupsen/logrus"
-)
+import "AdventOfCode2017/util"
 
 func ParseStreamString(stream string, doGarbage bool) int {
 	var countGarbage int
@@ -30,7 +28,7 @@ func ParseStreamString(stream string, doGarbage bool) int {
 			//
 			// Group
 		} else {
-			log.Panicf("Unhandled: %c", char)
+			util.LogPanicf("Unhandled: %c", char)
 		}
 	}
 	if doGarbage {

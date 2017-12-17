@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type Tree struct {
@@ -35,7 +33,7 @@ func (this *TreeNode) DebugInfo() string {
 }
 
 func (this *TreeNode) Balance() int {
-	//log.Infof("Balance : %s", this.Name)
+	//util.LogInfof("Balance : %s", this.Name)
 	for _, child := range this.Children {
 		n := child.Balance()
 		if n > 0 {
@@ -68,20 +66,20 @@ func (this *TreeNode) Balance() int {
 			}
 			prev = curr
 			if incorrect != nil {
-				log.Infof("Balance : %d : prev=%s : curr=%s : incorrect=%s", i, prev.DebugInfo(), curr.DebugInfo(), incorrect.DebugInfo())
+				util.LogInfof("Balance : %d : prev=%s : curr=%s : incorrect=%s", i, prev.DebugInfo(), curr.DebugInfo(), incorrect.DebugInfo())
 			} else {
-				//log.Infof("Balance : %d : prev=%s : curr=%s", i, prev.DebugInfo(), curr.DebugInfo())
+				//util.LogInfof("Balance : %d : prev=%s : curr=%s", i, prev.DebugInfo(), curr.DebugInfo())
 			}
 		}
 	}
 	if incorrect != nil {
-		log.Infof("************************")
+		util.LogInfof("************************")
 		for _, child := range this.Children {
-			log.Infof("%s", child.DebugInfo())
+			util.LogInfof("%s", child.DebugInfo())
 		}
-		log.Infof("------------------------")
+		util.LogInfof("------------------------")
 		incorrect.Weight -= (incorrect.WeightWithChildren() - wanted)
-		log.Infof("%s", incorrect.DebugInfo())
+		util.LogInfof("%s", incorrect.DebugInfo())
 		return incorrect.Weight
 	}
 	return 0
@@ -116,7 +114,7 @@ func Load(filename string) Tree {
 		node.Name = rowItems[0]
 		node.Weight, err = strconv.Atoi(rowItems[1][1 : len(rowItems[1])-1])
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 		for i := 3; i < len(rowItems); i++ {
 			if strings.HasSuffix(rowItems[i], ",") {
@@ -135,7 +133,7 @@ func Load(filename string) Tree {
 			for _, n := range tree.Nodes {
 				if n.Name == childName {
 					if n.Parent != nil {
-						log.Panicf("Didn't except more than one parent")
+						util.LogPanicf("Didn't except more than one parent")
 					}
 					node.Children = append(node.Children, n)
 					n.Parent = node

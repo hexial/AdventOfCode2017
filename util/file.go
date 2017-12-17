@@ -6,14 +6,12 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func FileAsLineArray(filename string) []string {
 	f, err := os.Open(filename)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	r := bufio.NewReader(f)
 	l := make([]string, 0)
@@ -29,11 +27,11 @@ func FileAsLineArray(filename string) []string {
 func FileAsString(filename string) string {
 	f, err := os.Open(filename)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	return string(b)
 }
@@ -50,7 +48,7 @@ func FileAsSeparatedSingleLineNumbers(filename string, sep string) []int {
 		var err error
 		result[i], err = strconv.Atoi(s[i])
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 	}
 	return result
@@ -61,7 +59,7 @@ func FileAsNumberArray(filename string) []int {
 	for _, s := range FileAsLineArray(filename) {
 		n, err := strconv.Atoi(s)
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 		l = append(l, n)
 	}
@@ -91,7 +89,7 @@ func FileAsWordNumberArraySep(filename string, sep string) [][]int {
 		for _, s2 := range s1 {
 			n, err := strconv.Atoi(strings.TrimSpace(s2))
 			if err != nil {
-				log.Panic(err)
+				panic(err)
 			}
 			l2 = append(l2, n)
 		}

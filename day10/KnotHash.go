@@ -13,8 +13,8 @@ type KnotHash struct {
 }
 
 func (kh *KnotHash) reverse(l byte) {
-	//log.Infof("********************************")
-	//log.Infof("circularListPos=%d circularListSkipSize=%d l=%d circularList=%v", kh.circularListPos, kh.circularListSkipSize, l, kh.circularList)
+	//util.LogInfof("********************************")
+	//util.LogInfof("circularListPos=%d circularListSkipSize=%d l=%d circularList=%v", kh.circularListPos, kh.circularListSkipSize, l, kh.circularList)
 	n := make([]byte, l)
 	pos := kh.circularListPos
 	for i := 0; i < int(l); i++ {
@@ -24,11 +24,11 @@ func (kh *KnotHash) reverse(l byte) {
 			pos = 0
 		}
 	}
-	//log.Infof("circularListPos= %d l=%d n=%v", kh.circularListPos, l, n)
+	//util.LogInfof("circularListPos= %d l=%d n=%v", kh.circularListPos, l, n)
 	for i, j := 0, int(l)-1; i < j; i, j = i+1, j-1 {
 		n[i], n[j] = n[j], n[i]
 	}
-	//log.Infof("circularListPos= %d l=%d n=%v", kh.circularListPos, l, n)
+	//util.LogInfof("circularListPos= %d l=%d n=%v", kh.circularListPos, l, n)
 	for _, i := range n {
 		kh.circularList[kh.circularListPos] = i
 		kh.circularListPos++
@@ -43,7 +43,7 @@ func (kh *KnotHash) reverse(l byte) {
 		}
 	}
 	kh.circularListSkipSize++
-	//log.Infof("circularListPos=%d circularListSkipSize=%d l=%d circularList=%v", kh.circularListPos, kh.circularListSkipSize, l, kh.circularList)
+	//util.LogInfof("circularListPos=%d circularListSkipSize=%d l=%d circularList=%v", kh.circularListPos, kh.circularListSkipSize, l, kh.circularList)
 }
 
 func (kh *KnotHash) result1() int {

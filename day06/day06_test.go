@@ -3,9 +3,6 @@ package day06
 import (
 	"AdventOfCode2017/util"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
 func compare(a, b []int) bool {
@@ -19,7 +16,7 @@ func compare(a, b []int) bool {
 
 func lookForTwoAlike(history [][]int) (bool, int) {
 	if len(history) == 0 {
-		log.Panicf("Empty history")
+		util.LogPanicf("Empty history")
 	}
 	for i1 := 0; i1 < len(history); i1++ {
 		for i2 := 0; i2 < len(history); i2++ {
@@ -36,10 +33,10 @@ func lookForTwoAlike(history [][]int) (bool, int) {
 }
 
 func redistribute(b []int) []int {
-	//log.Infof("****************")
+	//util.LogInfof("****************")
 	banks := make([]int, len(b))
 	if copy(banks, b) != len(b) {
-		log.Panicf("Didn't copy everything")
+		util.LogPanicf("Didn't copy everything")
 	}
 	//
 	// Look for highest
@@ -74,7 +71,7 @@ func calc(filename string, second bool) int {
 	for {
 		//
 		history = append(history, redistribute(history[cycle]))
-		//log.Infof("%+v", history)
+		//util.LogInfof("%+v", history)
 		cycle++
 		//
 		alike, size := lookForTwoAlike(history)
@@ -85,7 +82,7 @@ func calc(filename string, second bool) int {
 			return size
 		}
 		if cycle%1000 == 1 {
-			log.Infof("cycle: %d", cycle)
+			util.LogInfof("cycle: %d", cycle)
 		}
 	}
 }
@@ -95,15 +92,15 @@ func TestPartOne(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 5, calc("input.1.sample.txt", false), "oops")
-	log.Infof("My answer: %d", calc("input.1.txt", false))
+	util.AssertEqual(t, 5, calc("input.1.sample.txt", false))
+	util.LogInfof("My answer: %d", calc("input.1.txt", false))
 }
 
 func TestPartTwo(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 4, calc("input.1.sample.txt", true), "oops")
-	log.Infof("My answer: %d", calc("input.1.txt", true))
+	util.AssertEqual(t, 4, calc("input.1.sample.txt", true))
+	util.LogInfof("My answer: %d", calc("input.1.txt", true))
 
 }

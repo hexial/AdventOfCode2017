@@ -1,8 +1,6 @@
 package day17
 
-import (
-	log "github.com/sirupsen/logrus"
-)
+import "AdventOfCode2017/util"
 
 func init() {
 	//log.SetLevel(log.DebugLevel)
@@ -30,7 +28,7 @@ func NewCircularBuffer(steps int, rounds int) *CircularBuffer {
 	for i := 0; i < rounds; i++ {
 		cb.Insert(i + 1)
 		if i%1000000 == 0 {
-			log.Infof("i=%d", i)
+			util.LogInfof("i=%d", i)
 		}
 	}
 	return cb
@@ -45,7 +43,7 @@ func (cb *CircularBuffer) Insert(val int) {
 	}
 	//
 	//
-	log.Debugf("Insert : val=%d", cb.Curr.val)
+	util.LogDebugf("Insert : val=%d", cb.Curr.val)
 	//
 	// Insert value
 	n := new(BufferItem)

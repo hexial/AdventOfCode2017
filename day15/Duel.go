@@ -6,12 +6,12 @@ func Duel(a *Generator, b *Generator, pairs int64) int {
 	for i = 0; i < pairs; i++ {
 		valA := a.Next()
 		valB := b.Next()
-		//log.Infof("valA=%d valB=%d", valA, valB)
+		//util.LogInfof("valA=%d valB=%d", valA, valB)
 		if valA&0xFFFF == valB&0xFFFF {
 			matches++
-			//log.Infof("Match")
+			//util.LogInfof("Match")
 		} else {
-			//log.Infof("Missmatch")
+			//util.LogInfof("Missmatch")
 		}
 	}
 	return matches

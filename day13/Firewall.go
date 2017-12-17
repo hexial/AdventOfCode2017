@@ -3,7 +3,7 @@ package day13
 import (
 	"AdventOfCode2017/util"
 
-	log "github.com/sirupsen/logrus"
+	
 )
 
 type Layer struct {
@@ -16,13 +16,13 @@ type Firewall struct {
 }
 
 func (fw *Firewall) Delay() int {
-	log.Infof("highestKey=%d", fw.highestKey)
+	util.LogInfof("highestKey=%d", fw.highestKey)
 	var delay int
 	//delay = 21400000000
 	delay = 0
 	for {
 		if delay%100000000 == 0 {
-			log.Infof("Delay: %d", delay)
+			util.LogInfof("Delay: %d", delay)
 		}
 		hit := false
 		for picosecond := 0; picosecond <= fw.highestKey; picosecond++ {
@@ -57,7 +57,7 @@ func TestHit(depth int, picosecond int, delay int) bool {
 	} else {
 		result = s%steps == 0
 	}
-	//log.Infof("time=%d : depth=%d : steps=%d, s=%d : %t", time, depth, steps, s, result)
+	//util.LogInfof("time=%d : depth=%d : steps=%d, s=%d : %t", time, depth, steps, s, result)
 	return result
 }
 
@@ -68,7 +68,7 @@ func (fw *Firewall) Hit(picosecond int, delay int) (bool, int) {
 	}
 	if TestHit(depth, picosecond, delay) {
 		sev := depth * picosecond
-		//log.Infof("Hit : sev=%d", sev)
+		//util.LogInfof("Hit : sev=%d", sev)
 		return true, sev
 	}
 	return false, 0

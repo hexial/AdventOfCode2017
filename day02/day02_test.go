@@ -3,13 +3,10 @@ package day02
 import (
 	"AdventOfCode2017/util"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
 func calcPartOne(filename string) int {
-	//log.Infof("*****************")
+	//util.LogInfof("*****************")
 	numbers := util.CSVNumbers(filename)
 	sum := 0
 	for _, row := range numbers {
@@ -29,8 +26,8 @@ func calcPartOne(filename string) int {
 }
 
 func TestPartOne(t *testing.T) {
-	//assert.Equal(t, 18, calcPartOne("input.sample.txt"), "oops")
-	log.Infof("Answer: %d", calcPartOne("input.txt"))
+	//util.AssertEqual(t, 18, calcPartOne("input.sample.txt"))
+	util.LogInfof("Answer: %d", calcPartOne("input.txt"))
 }
 
 func calcPartTwo(filename string) int {
@@ -51,6 +48,6 @@ func calcPartTwo(filename string) int {
 }
 
 func TestPartTwo(t *testing.T) {
-	assert.Equal(t, 9, calcPartTwo("input.2.sample.txt"), "oops")
-	log.Infof("Answer: %d", calcPartTwo("input.2.txt"))
+	util.AssertEqual(t, 9, calcPartTwo("input.2.sample.txt"))
+	util.LogInfof("Answer: %d", calcPartTwo("input.2.txt"))
 }

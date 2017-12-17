@@ -5,9 +5,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
 func DoPartOne(filename string, anagram bool) int {
@@ -23,7 +20,7 @@ func DoPartOne(filename string, anagram bool) int {
 
 func CheckPartOne(in []string, anagram bool) bool {
 	m := make(map[string]bool)
-	log.Infof("*****************")
+	util.LogInfof("*****************")
 	for _, s := range in {
 		if anagram {
 			r := strings.NewReader(s)
@@ -40,10 +37,10 @@ func CheckPartOne(in []string, anagram bool) bool {
 			s = ss
 		}
 		if _, ok := m[s]; ok {
-			log.Infof("%s: false", s)
+			util.LogInfof("%s: false", s)
 			return false
 		}
-		log.Infof("%s: true", s)
+		util.LogInfof("%s: true", s)
 		m[s] = true
 	}
 	return true
@@ -54,8 +51,8 @@ func TestPartOne(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 2, DoPartOne("input.part.one.sample.txt", false), "oops")
-	log.Infof("My answer: %d", DoPartOne("input.part.one.txt", false))
+	util.AssertEqual(t, 2, DoPartOne("input.part.one.sample.txt", false))
+	util.LogInfof("My answer: %d", DoPartOne("input.part.one.txt", false))
 }
 
 func TestPartTwo(t *testing.T) {
@@ -63,6 +60,6 @@ func TestPartTwo(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 3, DoPartOne("input.part.two.sample.txt", true), "oops")
-	log.Infof("My answer: %d", DoPartOne("input.part.two.txt", true))
+	util.AssertEqual(t, 3, DoPartOne("input.part.two.sample.txt", true))
+	util.LogInfof("My answer: %d", DoPartOne("input.part.two.txt", true))
 }

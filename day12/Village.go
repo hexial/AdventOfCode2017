@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type Village struct {
@@ -48,7 +46,7 @@ func NewVillage(data []string) *Village {
 		p := new(Program)
 		p.ID, err = strconv.Atoi(strings.TrimSpace(strings.Split(str, "<->")[0]))
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 		village.Programs = append(village.Programs, p)
 	}
@@ -58,12 +56,12 @@ func NewVillage(data []string) *Village {
 		s := strings.Split(str, "<->")
 		programId, err := strconv.Atoi(strings.TrimSpace(s[0]))
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 		for _, pipeStr := range strings.Split(s[1], ",") {
 			pipeProgramId, err := strconv.Atoi(strings.TrimSpace(pipeStr))
 			if err != nil {
-				log.Panic(err)
+				panic(err)
 			}
 			village.GetProgram(programId).AddPipe(village.GetProgram(pipeProgramId))
 		}

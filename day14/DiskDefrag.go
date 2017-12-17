@@ -2,10 +2,9 @@ package day14
 
 import (
 	"AdventOfCode2017/day10"
+	"AdventOfCode2017/util"
 	"encoding/hex"
 	"fmt"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func getBit(b byte, bit uint) int {
@@ -55,7 +54,7 @@ func (dd *DiskDefrag) CalcRegions() int {
 		for x := 0; x < len(dd.regions[y]); x++ {
 			if dd.usage[y][x] == '#' && dd.regions[y][x] == 0 {
 				dd.maxRegion++
-				//log.Infof("*************************************")
+				//util.LogInfof("*************************************")
 				dd._fill(y, x, dd.maxRegion)
 			}
 		}
@@ -67,10 +66,10 @@ func (dd *DiskDefrag) CalcRegions() int {
 func (dd *DiskDefrag) _fill(y, x, r int) {
 	if y >= 0 && y < len(dd.regions) && x >= 0 && x < len(dd.regions[y]) {
 		if dd.regions[y][x] != 0 && dd.regions[y][x] != r {
-			log.Panicf("This should not happen: y=%d x=%d", y, x)
+			util.LogPanicf("This should not happen: y=%d x=%d", y, x)
 		}
 		if dd.usage[y][x] == '#' && dd.regions[y][x] == 0 {
-			//log.Infof("_fill(%d,%d,%d)", y, x, r)
+			//util.LogInfof("_fill(%d,%d,%d)", y, x, r)
 			dd.regions[y][x] = r
 			dd._fill(y-1, x, r)
 			dd._fill(y+1, x, r)
@@ -105,9 +104,9 @@ func (dd *DiskDefrag) Debug(size int) {
 		for x := 0; x < size; x++ {
 			str += fmt.Sprintf("[ %c]", dd.usage[y][x])
 		}
-		log.Infof("%s", str)
+		util.LogInfof("%s", str)
 	}
-	log.Infof("-----------------")
+	util.LogInfof("-----------------")
 	for y := 0; y < size; y++ {
 		str := ""
 		for x := 0; x < size; x++ {
@@ -117,6 +116,6 @@ func (dd *DiskDefrag) Debug(size int) {
 				str += fmt.Sprintf("[%02d]", dd.regions[y][x])
 			}
 		}
-		log.Infof("%s", str)
+		util.LogInfof("%s", str)
 	}
 }

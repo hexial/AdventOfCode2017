@@ -3,9 +3,6 @@ package day05
 import (
 	"AdventOfCode2017/util"
 	"testing"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
 func calc(filename string) int {
@@ -13,7 +10,7 @@ func calc(filename string) int {
 	index := 0
 	steps := 0
 	for index >= 0 && index < len(list) {
-		//log.Infof("%+v [index=%d][%d]", list, index, list[index])
+		//util.LogInfof("%+v [index=%d][%d]", list, index, list[index])
 		if list[index] == 0 {
 			//
 			// Do nothing
@@ -34,7 +31,7 @@ func calcSecond(filename string) int {
 	index := 0
 	steps := 0
 	for index >= 0 && index < len(list) {
-		//log.Infof("%+v [index=%d][%d]", list, index, list[index])
+		//util.LogInfof("%+v [index=%d][%d]", list, index, list[index])
 		if list[index] == 0 {
 			//
 			// Do nothing
@@ -59,8 +56,8 @@ func TestPartOne(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 5, calc("input.1.sample.txt"), "oops")
-	log.Infof("My answer: %d", calc("input.1.txt"))
+	util.AssertEqual(t, 5, calc("input.1.sample.txt"))
+	util.LogInfof("My answer: %d", calc("input.1.txt"))
 }
 
 func TestPartTwo(t *testing.T) {
@@ -68,6 +65,6 @@ func TestPartTwo(t *testing.T) {
 	//
 	//
 
-	assert.Equal(t, 10, calcSecond("input.1.sample.txt"), "oops")
-	log.Infof("My answer: %d", calcSecond("input.1.txt"))
+	util.AssertEqual(t, 10, calcSecond("input.1.sample.txt"))
+	util.LogInfof("My answer: %d", calcSecond("input.1.txt"))
 }
