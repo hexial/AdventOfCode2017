@@ -1,9 +1,12 @@
 package day17
 
-import "AdventOfCode2017/util"
+import (
+	"AdventOfCode2017/util"
+	"fmt"
+)
 
 func init() {
-	//log.SetLevel(log.DebugLevel)
+	util.Debug = false
 }
 
 type BufferItem struct {
@@ -53,8 +56,9 @@ func (cb *CircularBuffer) Insert(val int) {
 	n.Next = cb.Curr
 	cb.Prev.Next = n
 	//
-	cb.State()
-	//log.Debugf("Insert (done): pos=%d : val=%d : %v", cb.pos, cb.buffer[cb.pos], cb.buffer)
+	if util.Debug {
+		cb.State()
+	}
 }
 
 func (cb *CircularBuffer) NextVal() int {
@@ -67,18 +71,16 @@ func (cb *CircularBuffer) ValPos1() int {
 }
 
 func (cb *CircularBuffer) State() {
-	/*
-		str := ""
-			done := false
-			curr := cb.ItemZero
-			for !done {
-				str += fmt.Sprintf("%d,", curr.val)
-				if curr.Next == cb.ItemZero {
-					done = true
-				} else {
-					curr = curr.Next
-				}
-			}
-			log.Debugf("state=%s", str)
-	*/
+	str := ""
+	done := false
+	curr := cb.ItemZero
+	for !done {
+		str += fmt.Sprintf("%d,", curr.val)
+		if curr.Next == cb.ItemZero {
+			done = true
+		} else {
+			curr = curr.Next
+		}
+	}
+	util.LogDebugf("state=%s", str)
 }
