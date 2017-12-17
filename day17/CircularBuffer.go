@@ -1,8 +1,6 @@
 package day17
 
 import (
-	"fmt"
-
 	log "github.com/sirupsen/logrus"
 )
 
@@ -12,13 +10,13 @@ func init() {
 
 type BufferItem struct {
 	Next *BufferItem
-	Prev *BufferItem
 	val  int
 }
 
 type CircularBuffer struct {
 	ItemZero *BufferItem
 	Curr     *BufferItem
+	Prev     *BufferItem
 	steps    int
 }
 
@@ -27,8 +25,8 @@ func NewCircularBuffer(steps int, rounds int) *CircularBuffer {
 	cb.steps = steps
 	cb.ItemZero = new(BufferItem)
 	cb.ItemZero.Next = cb.ItemZero
-	cb.ItemZero.Prev = cb.ItemZero
 	cb.Curr = cb.ItemZero
+	cb.Prev = cb.Curr
 	for i := 0; i < rounds; i++ {
 		cb.Insert(i + 1)
 		if i%1000000 == 0 {
@@ -42,6 +40,7 @@ func (cb *CircularBuffer) Insert(val int) {
 	//
 	// Step forward x times
 	for i := 0; i < cb.steps; i++ {
+		cb.Prev = cb.Curr
 		cb.Curr = cb.Curr.Next
 	}
 	//
@@ -49,16 +48,13 @@ func (cb *CircularBuffer) Insert(val int) {
 	log.Debugf("Insert : val=%d", cb.Curr.val)
 	//
 	// Insert value
-	left := cb.Curr.Prev
-	rigth := cb.Curr
 	n := new(BufferItem)
 	n.val = val
-	left.Next = n
-	rigth.Prev = n
-	n.Prev = left
-	n.Next = rigth
 	//
-	cb.Curr.Prev = n
+	//
+	n.Next = cb.Curr
+	cb.Prev.Next = n
+	//
 	cb.State()
 	//log.Debugf("Insert (done): pos=%d : val=%d : %v", cb.pos, cb.buffer[cb.pos], cb.buffer)
 }
@@ -73,16 +69,18 @@ func (cb *CircularBuffer) ValPos1() int {
 }
 
 func (cb *CircularBuffer) State() {
-	str := ""
-	done := false
-	curr := cb.ItemZero
-	for !done {
-		str += fmt.Sprintf("%d,", curr.val)
-		if curr.Next == cb.ItemZero {
-			done = true
-		} else {
-			curr = curr.Next
-		}
-	}
-	log.Debugf("state=%s", str)
+	/*
+		str := ""
+			done := false
+			curr := cb.ItemZero
+			for !done {
+				str += fmt.Sprintf("%d,", curr.val)
+				if curr.Next == cb.ItemZero {
+					done = true
+				} else {
+					curr = curr.Next
+				}
+			}
+			log.Debugf("state=%s", str)
+	*/
 }

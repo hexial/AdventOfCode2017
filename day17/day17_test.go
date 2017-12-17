@@ -14,6 +14,6 @@ func Test(t *testing.T) {
 	//NewCircularBuffer(3, 9)
 	assert.Equal(t, 638, NewCircularBuffer(3, 2017).NextVal())
 	assert.Equal(t, 204, NewCircularBuffer(380, 2017).NextVal())
-	//assert.Equal(t, 0, NewCircularBuffer(380, 50000000).ValPos1())
+	assert.Equal(t, 28954211, NewCircularBuffer(380, 50000000).ValPos1())
 
 }
