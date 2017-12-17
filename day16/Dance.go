@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	
 )
 
 func Fix(loops int, repeat int) int {

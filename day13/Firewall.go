@@ -2,8 +2,6 @@ package day13
 
 import (
 	"AdventOfCode2017/util"
-
-	
 )
 
 type Layer struct {
