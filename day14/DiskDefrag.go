@@ -28,102 +28,95 @@ func calcByte(b byte) (int, string) {
 	return sum, s
 }
 
-func DoRoundUsed(s string) int {
-	var used int
-	str := day10.NewKnotHashPartTwo(s, 256).DenseHash
-	val, err := hex.DecodeString(str)
-	if err != nil {
-		panic(err)
-	}
-	for _, b := range val {
-		u, _ := calcByte(b)
-		used += u
-		//log.Infof("%s", s)
-	}
-	log.Infof("%s : %s : %d", s, str, used)
-	return used
+type DiskDefrag struct {
+	key       string
+	maxRegion int
+	regions   [128][128]int
+	usage     [128][128]rune
+	used      int
 }
 
-func CalcUsed(key string) int {
-	var used int
-	var num int
-	num = 128
-	for i := 0; i < num; i++ {
-		used += DoRoundUsed(fmt.Sprintf("%s-%d", key, i))
-	}
-	return used
+func NewDiskDefrag(key string) *DiskDefrag {
+	dd := new(DiskDefrag)
+	dd.key = key
+	dd.Build()
+	return dd
 }
 
-func DoRoundRegion(s string, i int, regions *[128][128]int, maxRegion *int) {
-	str := day10.NewKnotHashPartTwo(s, 256).DenseHash
-	val, err := hex.DecodeString(str)
-	if err != nil {
-		panic(err)
+func (dd *DiskDefrag) GetAbove(y, x int) int {
+	if y > 0 {
+		return dd.regions[y-1][x]
 	}
-	s1 := ""
-	for _, b := range val {
-		_, s2 := calcByte(b)
-		s1 += s2
-	}
-	var r int
-	runes := []rune(s1)
-	var inRegion bool
-	for pos := 0; pos < 128; pos++ {
-		//log.Infof("pos=%d, r=%d, inRegion=%t", pos, r, inRegion)
-		if !inRegion && runes[pos] == '#' {
-			//
-			// Going into new region
-			r = 0
-			inRegion = true
-			//log.Infof("In region")
-			if pos == 127 {
-				if inRegion && i > 0 && regions[i-1][pos] > 0 {
-					//
-					// Above has region
-					r = regions[i-1][pos]
-				} else {
-					*maxRegion++
-					r = *maxRegion
-				}
-				regions[i][pos] = r
+	return 0
+}
+
+func (dd *DiskDefrag) CalcRegions() int {
+	for y := 0; y < len(dd.regions); y++ {
+		for x := 0; x < len(dd.regions[y]); x++ {
+			if dd.usage[y][x] == '#' && dd.regions[y][x] == 0 {
+				dd.maxRegion++
+				//log.Infof("*************************************")
+				dd._fill(y, x, dd.maxRegion)
 			}
-		} else if inRegion && (runes[pos] == '.' || pos == 127) {
-			//
-			// Going out of region
-			if r == 0 {
-				*maxRegion++
-				r = *maxRegion
-			}
-			t := pos - 1
-			if runes[pos] == '#' {
-				t = pos
-			}
-			for t >= 0 && runes[t] == '#' {
-				regions[i][t] = r
-				t--
-			}
-			inRegion = false
-			//log.Infof("Out region")
-		}
-		if inRegion && i > 0 && regions[i-1][pos] > 0 {
-			//
-			// Above has region
-			r = regions[i-1][pos]
-			//log.Info("Above region: %d", r)
 		}
 	}
-	//log.Infof("%s", s)
-	//log.Infof("%s", s1)
-	//log.Infof("%v", regions[i])
+	//dd.Debug(128)
+	return dd.maxRegion
 }
 
-func CalcRegions(key string) int {
-	var num int
-	var maxRegion int
-	var regions [128][128]int
-	num = 128
-	for i := 0; i < num; i++ {
-		DoRoundRegion(fmt.Sprintf("%s-%d", key, i), i, &regions, &maxRegion)
+func (dd *DiskDefrag) _fill(y, x, r int) {
+	if y >= 0 && y < len(dd.regions) && x >= 0 && x < len(dd.regions[y]) {
+		if dd.regions[y][x] != 0 && dd.regions[y][x] != r {
+			log.Panicf("This should not happen: y=%d x=%d", y, x)
+		}
+		if dd.usage[y][x] == '#' && dd.regions[y][x] == 0 {
+			//log.Infof("_fill(%d,%d,%d)", y, x, r)
+			dd.regions[y][x] = r
+			dd._fill(y-1, x, r)
+			dd._fill(y+1, x, r)
+			dd._fill(y, x-1, r)
+			dd._fill(y, x+1, r)
+		}
 	}
-	return maxRegion
+}
+
+func (dd *DiskDefrag) Build() {
+	for y := 0; y < len(dd.usage); y++ {
+		str := day10.NewKnotHashPartTwo(fmt.Sprintf("%s-%d", dd.key, y), 256).DenseHash
+		val, err := hex.DecodeString(str)
+		if err != nil {
+			panic(err)
+		}
+		x := 0
+		for _, b := range val {
+			u, s := calcByte(b)
+			for _, b1 := range []byte(s) {
+				dd.usage[y][x] = rune(b1)
+				x++
+			}
+			dd.used += u
+		}
+	}
+}
+
+func (dd *DiskDefrag) Debug(size int) {
+	for y := 0; y < size; y++ {
+		str := ""
+		for x := 0; x < size; x++ {
+			str += fmt.Sprintf("[ %c]", dd.usage[y][x])
+		}
+		log.Infof("%s", str)
+	}
+	log.Infof("-----------------")
+	for y := 0; y < size; y++ {
+		str := ""
+		for x := 0; x < size; x++ {
+			if dd.regions[y][x] == 0 {
+				str += fmt.Sprintf("[  ]")
+			} else {
+				str += fmt.Sprintf("[%02d]", dd.regions[y][x])
+			}
+		}
+		log.Infof("%s", str)
+	}
 }

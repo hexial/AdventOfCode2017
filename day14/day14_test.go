@@ -7,11 +7,12 @@ import (
 )
 
 func TestPartOne(t *testing.T) {
-	assert.Equal(t, 8108, CalcUsed("flqrgnkx"))
-	assert.Equal(t, 8106, CalcUsed("oundnydw"))
+	NewDiskDefrag("flqrgnkx").Debug(8)
+	assert.Equal(t, 8108, NewDiskDefrag("flqrgnkx").used)
+	assert.Equal(t, 8106, NewDiskDefrag("oundnydw").used)
 }
 
 func TestPartTwo(t *testing.T) {
-	assert.Equal(t, 1242, CalcRegions("flqrgnkx"))
-	assert.Equal(t, 0, CalcRegions("oundnydw"))
+	assert.Equal(t, 1242, NewDiskDefrag("flqrgnkx").CalcRegions())
+	assert.Equal(t, 1164, NewDiskDefrag("oundnydw").CalcRegions())
 }
