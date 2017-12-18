@@ -86,7 +86,7 @@ func (cpu *CPU) InstrRCV(i []string) {
 			}
 			cpu.Program.Waiting = false
 			v := cpu.Program.Queue.Pop()
-			//util.LogDebugf("%s : Received : %d", cpu.Prefix(), v)
+			util.LogDebugf("%s : Received : %d", cpu.Prefix(), v)
 			cpu.StoreReg(i[1], v)
 			done = true
 		}

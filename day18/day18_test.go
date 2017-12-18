@@ -6,7 +6,7 @@ import (
 )
 
 func Test1(t *testing.T) {
-	util.Debug = true
+	util.Debug = false
 	util.AssertEqual(t, 4, NewOperatingSystem("sample", 1).PartOne())
 	util.AssertEqual(t, 1187, NewOperatingSystem("input", 1).PartOne())
 }
